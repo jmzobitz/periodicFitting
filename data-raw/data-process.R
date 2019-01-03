@@ -23,7 +23,7 @@ use_data(mauna_loa,overwrite = TRUE)
 ### DATA SET 2: CUMULUATIVE NEE FROM COLORADO
 colorado <- read_csv('data-raw/neeData-PB.csv') %>%
   mutate(time=1998+time) %>%
-  mutate(date=date_decimal(1998+time)) %>%
+  mutate(date=date_decimal(time)) %>%
   mutate(date=round_date(date,unit="day")) %>%
   select(date,time,cumNEE) %>% # Round up the days
   rename(value=cumNEE) %>%
