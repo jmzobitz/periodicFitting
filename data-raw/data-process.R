@@ -21,14 +21,17 @@ mauna_loa <- read_csv('data-raw/co2_mm_mlo-jz.csv',na="-99.99")  %>%
 use_data(mauna_loa,overwrite = TRUE)
 
 ### DATA SET 2: CUMULUATIVE NEE FROM COLORADO
-colorado <- read_csv('data-raw/neeData-PB.csv') %>%
-  mutate(time=1998+time) %>%
-  mutate(date=date_decimal(time)) %>%
-  mutate(date=round_date(date,unit="day")) %>%
-  select(date,time,cumNEE) %>% # Round up the days
-  rename(value=cumNEE) %>%
-  mutate(product="cumNEE") %>%
-  select(date,time,product,value)
+colorado <- read_csv('data-raw/niwotNEE.csv') %>%
+  mutate(date=ymd(TIMESTAMP)) %>% # Convert to days
+  rename(nee = NEE_CUT_REF) %>%
+  mutate(time = decimal_date(date)) %>%
+  filter(year(date) > 1998) %>%
+  mutate(cumNEE=cumsum(nee)) %>%
+  group_by(year=year(date)) %>%
+  mutate(annNEE = cumsum(nee)) %>% ungroup() %>%
+  select(date,time,annNEE,cumNEE) %>%
+  gather(key=product,value=value,annNEE,cumNEE) %>% arrange(date)
+
 use_data(colorado,overwrite = TRUE)
 
 ### DATA SET 3: GPP and ET from Nicaragua
