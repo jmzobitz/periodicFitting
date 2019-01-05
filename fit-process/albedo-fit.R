@@ -42,10 +42,14 @@ fit_results_val<-invoke_map(over_list,.f=function(x,y){ periodic_fit(x,y)$predic
 
 # OK: next step is to see how we can get the fit and the names bound to each one
 
-# This is a hacky cheat, but I can't get pmap to work so it mutates the model and product simulataneously
+# This is a hacky cheat, but I can't get pmap to work so it mutates the model and product simulataneously - also adds in the date and the time for everything
+
 results_df <- fit_results_val %>%
   map2(over_names$site,~mutate(.x,site=.y)) %>%
-  map2(over_names$model,~mutate(.x,model=.y)) %>% bind_rows()
+  map2(over_names$model,~mutate(.x,model=.y)) %>% bind_rows() %>%
+  mutate(site=as.character(site),model=as.character(model)) %>%
+  split(.$model) %>%
+  map2_df(list(bind_rows(data)),~mutate(.x,date=.y$date,time=.y$time))
 
 
 mcd43A3_results <- list(models=models_val,aic=aic_val,fitted=results_df)

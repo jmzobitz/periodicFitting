@@ -6,7 +6,7 @@ p1 <- colorado %>%
   filter(product=="cumNEE") %>%
   ggplot() +
   geom_line(aes(x=date,y=value),size=2) +
-  labs(x="Date",y="Net Carbon Uptake (g C m-2)") +
+  labs(x="Date",y=expression(~Net~Carbon~Uptake~(g~C~m^{-2})),color="B(t) model")
   theme(axis.text = element_text(size=14),
         axis.title=element_text(size=20))
 
@@ -18,7 +18,7 @@ p2 <- colorado %>%
   filter(product=="annNEE") %>%
   ggplot() +
   geom_point(aes(x=yday(date),y=value,color=factor(year(date))),size=1) +
-  labs(x="Day of Year", y="Annual Net Carbon Uptake (g C m-2)",color="Year") +
+  labs(x="Day of Year",y=expression(~Annual~Net~Carbon~Uptake~(g~C~m^{-2})),color="B(t) model")+
   theme(axis.text = element_text(size=14),
         axis.title=element_text(size=20),
         legend.text=element_text(size=12),
