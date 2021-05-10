@@ -4,7 +4,9 @@
 \name{ET_data}
 \alias{ET_data}
 \title{Evaportranspiration for 3 MODIS pixels.}
-\format{A data frame with 1561 rows and 5 variables}
+\format{
+A data frame with 1561 rows and 5 variables
+}
 \source{
 Running, S., Mu, Q., Zhao, M. (2017). MOD16A2 MODIS/Terra Net Evapotranspiration 8-Day L4 Global 500m SIN Grid V006. NASA EOSDIS Land Processes DAAC. doi: 10.5067/MODIS/MOD16A2.006. Accessed January 4, 2019.
 

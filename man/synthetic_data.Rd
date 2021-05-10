@@ -4,7 +4,9 @@
 \name{synthetic_data}
 \alias{synthetic_data}
 \title{Synthetic data set for periodic fitting}
-\format{A data frame with 1561 rows and 5 variables}
+\format{
+A data frame with 1561 rows and 5 variables
+}
 \source{
 Zobitz - see the file synthetic-data-process.R in the data-raw folder
 }

@@ -4,7 +4,9 @@
 \name{baseline_formulas}
 \alias{baseline_formulas}
 \title{Lists of baselines formulas we are using.  This is a list of lists with three things}
-\format{A list with two elements: a list of formulas and a data frame}
+\format{
+A list with two elements: a list of formulas and a data frame
+}
 \usage{
 data(mauna_loa)
 }

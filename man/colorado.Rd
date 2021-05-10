@@ -4,7 +4,9 @@
 \name{colorado}
 \alias{colorado}
 \title{Net carbon uptake from the Niwot Ridge FLUXNET site}
-\format{A data frame with 5844 rows and 4 variables}
+\format{
+A data frame with 5844 rows and 4 variables
+}
 \source{
 Zobitz, John. 2013. “Forest Carbon Uptake and the Fundamental Theorem of Calculus.” The College Mathematics Journal 44 (5): 421–24. https://doi.org/10.4169/college.math.j.44.5.421.
 }

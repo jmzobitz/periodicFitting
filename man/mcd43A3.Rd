@@ -4,7 +4,9 @@
 \name{mcd43A3}
 \alias{mcd43A3}
 \title{Black sky albedo for 3 MODIS pixels.}
-\format{A data frame with 5907 rows and 5 variables}
+\format{
+A data frame with 5907 rows and 5 variables
+}
 \source{
 Schaaf, C., Wang, Z. (2015). MCD43A3 MODIS/Terra+Aqua BRDF/Albedo Daily L3 Global - 500m V006. NASA EOSDIS Land Processes DAAC. doi: 10.5067/MODIS/MCD43A3.006. Accessed January 4, 2019.
 }

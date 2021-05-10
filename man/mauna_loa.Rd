@@ -4,7 +4,9 @@
 \name{mauna_loa}
 \alias{mauna_loa}
 \title{Mauna Loa carbon dioxide data}
-\format{A data frame with 722 rows and 4 variables}
+\format{
+A data frame with 722 rows and 4 variables
+}
 \source{
 \url{https://www.esrl.noaa.gov/gmd/ccgg/trends/data.html}
 I downloaded the data and then modified it in Excel to strip trailing white space, makes it easier to read in.

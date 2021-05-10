@@ -4,7 +4,9 @@
 \name{nicaragua}
 \alias{nicaragua}
 \title{Gross primary productivity and evapotranspiration for a farm in Nicaragua}
-\format{A data frame with 360 rows and 4 variables}
+\format{
+A data frame with 360 rows and 4 variables
+}
 \source{
 To be filled in
 }

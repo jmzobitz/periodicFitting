@@ -25,59 +25,54 @@
 
 joint_fit_process <- function(data,model_stats_filename) {
 
-  # Identify the formulas we are using
-  formulas <- baseline_formulas$formulas
+  data_results <- baseline_formulas %>%
+    mutate(trigonometric = map(.x=formulas,.f=~trigonometric_fit(data,.x)),
+           polynomial = map(.x=formulas,.f=~periodic_fit(data,.x)),
+           piecewise = map(.x=formulas,.f=~piecewise_linear_fit(data,.x)) ) %>%
+    pivot_longer(names_to="model",values_to="results",cols=c("trigonometric","polynomial","piecewise")) %>%
+    hoist(results,predict="prediction",
+          stats = "fit" ) %>%
+    unnest_wider(col="stats") %>%
+    rename(approach = name)  # Rename for later
 
-  formula_info <- baseline_formulas$formula_info
 
 
-  # Fit data using a periodic approach:
-  data_results <- periodic_fit_process(data,formulas)
-
-  # Fit data using a trig approach:
-  data_results_trig <- trigonometric_fit_process(data,formulas)
 
 
   # Return out the results of the periodic fit and the trig where we have consistent estimates:
 
-  model_stats <- data_results$model_stats %>%
-    left_join(formula_info,by=c("model"="name")) %>%
-    filter(df.x==(df.y+2)) %>%
-    select(-df.y) %>%
-    add_column(approach="periodic")
 
 
-  model_stats_trig <- data_results_trig$model_stats %>%
-    left_join(formula_info,by=c("model"="name")) %>%
-    filter(df.x==(df.y+2)) %>%
-    select(-df.y) %>%
-    add_column(approach="trigonometric")
+  model_stats <- data_results %>%
+    select(approach,model,r.squared,AIC,centered_rms) %>%
+    mutate(across(.cols=c("r.squared","AIC","centered_rms"),.fns=~round(.,digits=2) )) %>%
+    mutate(approach=factor(approach,levels=c("constant","linear","quadratic","cubic","quartic")),
+           model = factor(model,levels=c("trigonometric","polynomial","piecewise"))) %>%
+    arrange(model,approach)
 
-  model_stats <- rbind(model_stats,model_stats_trig) %>%
-    arrange(site,approach,AIC) %>%
-    mutate(r.squared=round(r.squared,digits=2),
-           logLik = round(logLik,digits=2),
-           AIC=round(AIC,digits=2),
-           BIC=round(BIC,digits=2)) %>%
-    select(site,approach,model,r.squared,AIC)
+
+  model_table <- model_stats %>%
+    pivot_wider(names_from="approach",names_glue = "{approach}.{.value}",
+                values_from=c(r.squared,AIC,centered_rms) )
 
 
 
   ### Save a table we could format
-  write.table(model_stats, file = model_stats_filename, sep = " & ", eol= " \\\\\r",quote=FALSE)
+  write.table(model_table, file = model_stats_filename, sep = " & ", eol= " \\\\\r",quote=FALSE)
 
   # Make a plot where the trigonometric and periodic are fit side by side in a facetted plot
 
-  data_fits <- rbind(
-    add_column(data_results$fitted,approach="periodic"),
-    add_column(data_results_trig$fitted,approach="trigonometric")
-  ) %>%
-    filter(model %in% unique(model_stats$model)) # Only plot the good models
+  data_fits <- data_results %>%
+    select(approach,model,predict) %>%
+    unnest(cols=predict)
+
 
   # Now we want to filter out by each site ...
+
 
 
   return(data_fits)
 
 
 }
+

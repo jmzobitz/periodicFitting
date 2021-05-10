@@ -4,7 +4,9 @@
 \name{GPP_data}
 \alias{GPP_data}
 \title{Gross Primary Productivity for 3 MODIS pixels.}
-\format{A data frame with 1561 rows and 5 variables}
+\format{
+A data frame with 1561 rows and 5 variables
+}
 \source{
 Running, S., Mu, Q., Zhao, M. (2015). MOD17A2H MODIS/Terra Gross Primary Productivity 8-Day L4 Global 500m SIN Grid V006. NASA EOSDIS Land Processes DAAC. doi: 10.5067/MODIS/MOD17A2H.006. Accessed January 4, 2019.
 
