@@ -1,11 +1,13 @@
+library(tidyverse)
+library(periodicFitting)
 # Create a representative plot of the different periodic fits.
 aT <- 1
 bT <- 1
 m<- 5
 c <- 1
 b1 <- 0.2
-b2 <- 0.8
-c_pw <- 0
+b2 <- 0.6
+c_pw <- 1
 
 data <- tibble( time = seq(0,1,length.out = 1000),
                 trigonometric = aT*sin(2*pi*time)+bT*cos(2*pi*time),
@@ -26,5 +28,6 @@ p1 <- data %>%
 legend.title=element_text(size=20)) +
   scale_color_brewer(palette="Dark2")
 
+p1
 fileName <- paste0('manuscript-figures/sample_periodic.png')
 ggsave(fileName,plot=p1,height=9,width=10)

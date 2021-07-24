@@ -24,6 +24,7 @@ piecewise_linear_fit <- function(data_in,regression_formula)
   # First do a linear fit of the long term trend:
   baseline.mod <- lm(regression_formula,data=fit_data)
 
+
   # Detrend, making sure we have zero mean:
   my_fit <- augment(baseline.mod) %>%
     mutate(fracTime = fit_data$fracTime,
@@ -67,7 +68,7 @@ piecewise_linear_fit <- function(data_in,regression_formula)
              m_var = fracTime*x1+b1*x2+(b2-b1-1)*(fracTime-b1)*x2/(b2-b1) + (fracTime-1)*x3)
 
     # Now do th linear fit
-    seg_lin_fit <- lm(.resid~-1+c_var+m_var,data=seg_my_fit_data)
+    seg_lin_fit <- lm(.resid.zm~-1+c_var+m_var,data=seg_my_fit_data)
 
 
 

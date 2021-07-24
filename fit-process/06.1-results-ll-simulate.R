@@ -8,9 +8,9 @@
 
 # Get the AIC for each periodic fit, given a formula and a dataset
 get_aic <- function(data,formula) {
-  trigonometric <- trigonometric_fit(data,formula)$fit$AIC
-  polynomial <- periodic_fit(data,formula)$fit$AIC
-  piecewise <- piecewise_linear_fit(data,formula)$fit$AIC
+  trigonometric <- trigonometric_fit(data,formula)$fit$ll
+  polynomial <- periodic_fit(data,formula)$fit$ll
+  piecewise <- piecewise_linear_fit(data,formula)$fit$ll
   out <- tibble(trigonometric,polynomial,piecewise)
 
   return(out)
@@ -36,7 +36,7 @@ get_min_formulas <- function(data) {
 # Helper function to get the AIC without specifying a formula.
 aic_eval <- function(data,formula,fn_name) {
   eval(parse(text=paste0("curr_fn <-", fn_name)) )
-  curr_aic <- curr_fn(data,formula)$fit$AIC
+  curr_aic <- curr_fn(data,formula)$fit$ll
   return(curr_aic)
 }
 
@@ -124,7 +124,7 @@ n_times <- 10
 out_list <- vector("list",length=n_sims) %>%
   set_names(paste0("sim", 1:n_sims))
 
-for (i in 482:n_sims) {
+for (i in 64:n_sims) {
   #for (i in seq_along(out_list)) {
   print(i)
   aic_simulation_data <- my_formulas %>%
@@ -148,7 +148,7 @@ aic_simulation_data <- bind_rows(aic_simulation_data) %>% unnest(cols=c(out_resu
 #aic_simulation_data <- my_data %>% mutate(my_res = map(.x=data,.f=~aic_sample_process(.x,n_sims,n_times)))
 
 # Save your files
-save(aic_simulation_data,file = 'manuscript-figures/aic-results.Rda')
+save(aic_simulation_data,file = 'manuscript-figures/ll-results.Rda')
 
 # Load them up again and make your plot
 load('manuscript-figures/aic-results.Rda')
@@ -173,13 +173,13 @@ p1 <- median_results %>%
   geom_line(aes(y=q0.5,group=model),size=3) +
   geom_point(aes(y=q0.5),size=6) +
   facet_grid(dataset~.,scales="free_y") +
-  labs(y='AIC',x = "Percentage of original data (%)",color="P(\u03C4) model:") +
+  labs(y='LL',x = "Percentage of original data (%)",color="P(\u03C4) model:") +
   theme_periodic() +
   facet_grid(dataset2~.,scales="free_y",labeller = label_parsed) +
   theme(legend.box="vertical", legend.margin=margin()) +
   scale_color_brewer(palette="Dark2")
 
 
-fileName <- paste0('manuscript-figures/aic-sample-plot.png')
+fileName <- paste0('manuscript-figures/ll-sample-plot.png')
 ggsave(fileName,plot=p1,height=22,width=12)
 

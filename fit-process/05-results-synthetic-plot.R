@@ -7,9 +7,22 @@ library(periodicFitting)
 # Go through all the different baseline formulas and periodic functions to produce the results
 data_fits <- joint_fit_process(synthetic_data,"manuscript-figures/synthetic-results-table.txt")
 
+yee <- data_fits %>%
+  mutate(fracTime = decimal_date(date)-year(date))
 
+yee %>%
+  filter(approach == "linear",
+         model == "piecewise") %>%
+  ggplot(aes(x=fracTime,y=fit)) + geom_point()
 
+yee %>%
+  filter(approach == "linear",
+         model == "piecewise") %>%
+  arrange((fit))
 
+# 2.03 at .201
+# 1.08 at 0
+(2.03 - 1.08)/.201
 p1 <- data_fits %>%
   mutate(date = as.Date(date)) %>%
   filter(approach %in% c("constant","linear","quadratic")) %>%

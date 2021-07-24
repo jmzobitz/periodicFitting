@@ -34,7 +34,8 @@ fit_stats <- function(model,observations,n_params) {
 
   fit_stats <- tibble(r.squared = r.squared,
                       AIC=AIC,
-                      centered_rms = centered_rms)
+                      centered_rms = centered_rms,
+                      ll = ll)
 
   return(fit_stats)
 
